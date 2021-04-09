@@ -11,18 +11,10 @@ const ViewOrders = () => {
     const [id, setId] = useState('');
     const { itemData } = orders;
     const data = [];
-    const filteredData = [];
 
     const handleShow = (no) => {
         setModal(true);
         setId(no);
-        if (itemData !== undefined) {
-            itemData.map((item) => {
-                if (item.orderNo === no) {
-                }
-                filteredData.concat({ orderNo: item.orderNo, itemName: item.itemName });
-            })
-        }
     }
 
     const handleClose = (close) => {
@@ -44,15 +36,18 @@ const ViewOrders = () => {
                                     <th>Purchase Date</th>
                                     <th>Total Amount</th>
                                 </tr>
-                                {data ? data.map((item) => {
-                                    return (
-                                        <tr className="table-data">
-                                            <td>{item.orderNo}</td>
-                                            <td>{item.customerName}</td>
-                                            <td>{item.purchaseDate}</td>
-                                            <td>{item.quantity}</td>
-                                        </tr>
-                                    )
+                                {itemData ? itemData.map((item) => {
+                                    if (!data.includes(item.orderNo)) {
+                                        data.push(item.orderNo);
+                                        return (
+                                            <tr className="table-data" onClick={() => handleShow(item.orderNo)}>
+                                                <td>{item.orderNo}</td>
+                                                <td>{item.customerName}</td>
+                                                <td>{item.purchaseDate}</td>
+                                                <td>{item.quantity}</td>
+                                            </tr>
+                                        )
+                                    }
                                 }) : <span style={{ textAlign: 'center' }}>No order history found</span>
                                 }
                             </table>
